@@ -1,16 +1,6 @@
 # Databricks notebook source
-
-
-# COMMAND ----------
-
 import pandas as pd
 import numpy as np
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC DROP DATABASE feature_store CASCADE;
-# MAGIC DROP DATABASE ml_silver CASCADE;
 
 # COMMAND ----------
 
