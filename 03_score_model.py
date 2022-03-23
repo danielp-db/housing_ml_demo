@@ -77,8 +77,8 @@ display(scoring_df)
 
 # COMMAND ----------
 
-model = mlflow.pyfunc.load_model("models:/housing/1")
-model_udf = mlflow.pyfunc.spark_udf(spark, "models:/housing/1")
+model = mlflow.pyfunc.load_model(f"models:/housing/{model_version}")
+model_udf = mlflow.pyfunc.spark_udf(spark, f"models:/housing/{model_version}")
 
 # COMMAND ----------
 
@@ -96,11 +96,6 @@ def predict_pandas_udf(*cols):
 independent_vars = ['MedInc', 'AveRooms', 'AveBedrms', 'Population', 'AveOccup', 'Month','DayOfYear']
 housing_preds = scoring_df.withColumn("PredictedPrice", predict_pandas_udf(*independent_vars))
 display(housing_preds)
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC CREATE DATABASE IF NOT EXISTS ml_gold
 
 # COMMAND ----------
 

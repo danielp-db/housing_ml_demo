@@ -173,3 +173,12 @@ sells.write.format("delta").mode("overwrite").saveAsTable("ml_silver.house_sells
 # MAGIC LEFT JOIN ml_silver.vacations v
 # MAGIC ON 1=1
 # MAGIC   AND s.Date = v.Date
+
+# COMMAND ----------
+
+# MAGIC %md # CREATE GOLD TABLE
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC CREATE DATABASE IF NOT EXISTS ml_gold
