@@ -1,9 +1,9 @@
 # Databricks notebook source
-dbutils.widgets.text("start_date", "")
-dbutils.widgets.text("end_date", "")
+dbutils.widgets.text("01_start_date", "2021-01-01")
+dbutils.widgets.text("02_end_date", "2021-11-30")
 
-start_date = dbutils.widgets.get("start_date")
-end_date = dbutils.widgets.get("end_date")
+start_date = dbutils.widgets.get("01_start_date")
+end_date = dbutils.widgets.get("02_end_date")
 
 # COMMAND ----------
 
@@ -198,7 +198,35 @@ except:
 
 # COMMAND ----------
 
-#mlflow.tensorflow.autolog()
+# MAGIC %md SMALL NUMBER OF EPOCHS
+
+# COMMAND ----------
+
+mlflow.keras.autolog()
+
+with mlflow.start_run(experiment_id=experiment_id) as run:
+    history = model.fit(X_train, y_train, epochs=35, callbacks=[early_stopping])
+
+    # Save the run information to register the model later
+    kerasURI = run.info.artifact_uri
+
+    # Evaluate model on test dataset and log result
+    mlflow.log_param("eval_result", model.evaluate(X_test, y_test)[0])
+
+    # Plot predicted vs known values for a quick visual check of the model and log the plot as an artifact
+    keras_pred = model.predict(X_test)
+    plt.plot(y_test, keras_pred, "o", markersize=2)
+    plt.xlabel("observed value")
+    plt.ylabel("predicted value")
+    plt.savefig("/tmp/kplot.png")
+    mlflow.log_artifact("/tmp/kplot.png") 
+
+# COMMAND ----------
+
+# MAGIC %md MORE EPOCHS
+
+# COMMAND ----------
+
 mlflow.keras.autolog()
 
 with mlflow.start_run(experiment_id=experiment_id) as run:

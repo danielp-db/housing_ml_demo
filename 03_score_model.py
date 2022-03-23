@@ -1,9 +1,11 @@
 # Databricks notebook source
-dbutils.widgets.text("start_date", "")
-dbutils.widgets.text("end_date", "")
+dbutils.widgets.text("01_start_date", "2021-12-01")
+dbutils.widgets.text("02_end_date", "2021-12-31")
+dbutils.widgets.dropdown("03_model_version", "None", choices=["None","Staging","Production"])
 
-start_date = dbutils.widgets.get("start_date")
-end_date = dbutils.widgets.get("end_date")
+start_date = dbutils.widgets.get("01_start_date")
+end_date = dbutils.widgets.get("02_end_date")
+model_version = dbutils.widgets.get("03_model_version")
 
 # COMMAND ----------
 
