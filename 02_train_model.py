@@ -191,13 +191,17 @@ plt.axline((0, 0), (1, 1))
 
 # COMMAND ----------
 
-mlflow.create_experiment("house_prices")
+try:
+    experiment_id = mlflow.create_experiment("/Shared/housing/")
+except:
+    experiment_id = mlflow.get_experiment_by_name("/Shared/housing").experiment_id
 
 # COMMAND ----------
 
-mlflow.tensorflow.autolog()
- 
-with mlflow.start_run() as run:
+#mlflow.tensorflow.autolog()
+mlflow.keras.autolog()
+
+with mlflow.start_run(experiment_id=experiment_id) as run:
     history = model.fit(X_train, y_train, epochs=35, callbacks=[early_stopping])
 
     # Save the run information to register the model later
@@ -211,5 +215,12 @@ with mlflow.start_run() as run:
     plt.plot(y_test, keras_pred, "o", markersize=2)
     plt.xlabel("observed value")
     plt.ylabel("predicted value")
-    plt.savefig("kplot.png")
-    mlflow.log_artifact("kplot.png") 
+    plt.savefig("/tmp/kplot.png")
+    mlflow.log_artifact("/tmp/kplot.png") 
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC #-----------------------------------------
+# MAGIC # SEE THE RESULTS IN THE EXPERIMENTS TAB
+# MAGIC #-----------------------------------------
